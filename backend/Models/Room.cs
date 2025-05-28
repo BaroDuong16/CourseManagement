@@ -21,3 +21,4 @@ public partial class Room
 
     public virtual ICollection<RoomCourse> RoomCourses { get; set; } = new List<RoomCourse>();
 }
+ 

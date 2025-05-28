@@ -54,4 +54,6 @@ public partial class AspNetUser
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 
     public virtual ICollection<AspNetRole> Roles { get; set; } = new List<AspNetRole>();
+    // public virtual ICollection<AspNetUserRole> AspNetUserRoles  { get; set; } = new List<AspNetUserRole>();
+
 }

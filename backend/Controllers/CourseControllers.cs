@@ -13,6 +13,6 @@ namespace backend.Controllers
             _courseRepository = courseRepositories;
         }
 
-        [HttpPost]
+       
     }
 }

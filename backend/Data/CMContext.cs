@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace backend.Data;
 
@@ -35,6 +36,7 @@ public partial class CMContext : DbContext
     public virtual DbSet<Room> Rooms { get; set; }
 
     public virtual DbSet<RoomCourse> RoomCourses { get; set; }
+    // public virtual DbSet<AspNetUserRole> AspNetUserRole { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -42,6 +44,23 @@ public partial class CMContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // modelBuilder.Entity<AspNetUserRole>(entity =>
+        // {
+        //     entity.ToTable("AspNetUserRoles");
+        //     entity.HasKey(ur => new { ur.UserId, ur.RoleId });
+
+        //     entity.HasOne(d => d.AspNetRole).WithMany(p => p.AspNetUserRoles)
+        //         .HasForeignKey(e => e.RoleId)
+        //         .OnDelete(DeleteBehavior.ClientSetNull)
+        //         .HasConstraintName("AspNetUserRoles_RoleId_fkey")
+        //         .IsRequired();
+
+        //     entity.HasOne(d => d.AspNetUser).WithMany(p => p.AspNetUserRoles)
+        //         .HasForeignKey(e => e.UserId)
+        //         .OnDelete(DeleteBehavior.ClientSetNull)
+        //         .HasConstraintName("AspNetUserRoles_UserId_fkey")
+        //         .IsRequired();
+        // });
         modelBuilder.Entity<AspNetRole>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("AspNetRoles_pkey");
