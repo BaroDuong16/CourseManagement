@@ -41,6 +41,7 @@ public class AuthService
         };
 
         await _context.AspNetUsers.AddAsync(user);
+        await _context.SaveChangesAsync();
 
         // Gán Role
         var role = await _context.AspNetRoles.FirstOrDefaultAsync(r => r.Name == model.Role);
