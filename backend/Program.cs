@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using backend.Repositories;
 
 
 
@@ -66,6 +67,11 @@ builder.Services.AddSwaggerGen(options =>
             });
 
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<ICourseRepositories, CourseRepositories>();
+builder.Services.AddHttpContextAccessor();
+
 
 builder.Services.AddAuthorization();
 

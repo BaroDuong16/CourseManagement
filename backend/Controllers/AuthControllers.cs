@@ -32,14 +32,14 @@ public class AuthController : ControllerBase
     }
 
     [Authorize(Roles = "Teacher")]
-    [HttpGet("teacher-only")]
+    [HttpGet("teacher")]
     public IActionResult TeacherOnly()
     {
         return Ok("Chỉ giáo viên mới xem được dữ liệu này");
     }
 
     [Authorize(Roles = "Student")]
-    [HttpGet("student-only")]
+    [HttpGet("student")]
     public IActionResult StudentOnly()
     {
         return Ok("Chỉ sinh viên mới xem được dữ liệu này");

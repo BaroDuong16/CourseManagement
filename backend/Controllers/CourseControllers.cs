@@ -1,18 +1,98 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
+using backend.Dtos;
 using backend.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using backend.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize(Roles = "Teacher")]
     [ApiController]
-    public class BackendController : Controller
+    [Route("api/[controller]")]
+    public class CourseController : ControllerBase
     {
-        private readonly ICourseRepositories _courseRepository;
-        public BackendController(ICourseRepositories courseRepositories)
+        private readonly ICourseRepositories _courseRepo;
+        private readonly IUserService _userService;
+        private readonly CMContext _context;
+
+        public CourseController(ICourseRepositories courseRepo, IUserService userService, CMContext context)
         {
-            _courseRepository = courseRepositories;
+            _courseRepo = courseRepo;
+            _userService = userService;
+            _context = context;
         }
 
-       
+        [HttpPost("CreateCourse")]
+        public async Task<IActionResult> CreateCourse([FromBody] CourseDto courseDto)
+        {
+            var teacherId = _userService.GetUserId();
+            if (string.IsNullOrEmpty(teacherId))
+            return Unauthorized("User not authenticated.");
+
+    // 🔍 Kiểm tra xem ID có tồn tại trong bảng AspNetUsers không
+            var teacherExists = await _context.AspNetUsers.AnyAsync(u => u.Id == teacherId);
+            if (!teacherExists)
+                return BadRequest($"teacherId from token: {teacherId}");
+            var course = new Course
+            {
+                CourseId = Guid.NewGuid().ToString(),
+                CourseName = courseDto.CourseName,
+                Description = courseDto.Description,
+                Price = courseDto.Price,
+                MaxStudentQuantity = courseDto.MaxStudentQuantity,
+                StartDate = DateTime.SpecifyKind(courseDto.StartDate, DateTimeKind.Unspecified),
+                EndDate = DateTime.SpecifyKind(courseDto.EndDate, DateTimeKind.Unspecified),
+                TeacherId = teacherId,
+                CreateDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+                CreatedUserId = _userService.GetUserId()
+            };
+
+            await _courseRepo.AddCourseAsync(course);
+            return Ok(course);
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Course>>> GetAllCourses()
+        {
+            var courses = await _courseRepo.GetAllCoursesAsync();
+            return Ok(courses);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCourse(string id)
+        {
+            var course = await _courseRepo.GetCourseByIdAsync(id);
+            return course != null ? Ok(course) : NotFound();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCourse(string id, [FromBody] CourseDto updatedCourse)
+        {
+            var course = await _courseRepo.GetCourseByIdAsync(id);
+            if (course == null || course.TeacherId != _userService.GetUserId()) return Forbid();
+
+            course.CourseName = updatedCourse.CourseName;
+            course.Description = updatedCourse.Description;
+            course.Price = updatedCourse.Price;
+            course.MaxStudentQuantity = updatedCourse.MaxStudentQuantity;
+            course.StartDate = DateTime.SpecifyKind(updatedCourse.StartDate, DateTimeKind.Unspecified);
+            course.EndDate =DateTime.SpecifyKind(updatedCourse.EndDate, DateTimeKind.Unspecified);
+            course.UpdateDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);;
+            course.UpdatedUserId = _userService.GetUserId();
+
+            await _courseRepo.UpdateCourseAsync(course);
+            return Ok(course);
+        }
+
+        [HttpDelete("{CourseId}")]
+        public async Task<IActionResult> DeleteCourse(string CourseId)
+        {
+            var course = await _courseRepo.GetCourseByIdAsync(CourseId);
+            if (course == null || course.TeacherId != _userService.GetUserId()) return Forbid();
+
+            await _courseRepo.DeleteCourseAsync(course.CourseId);
+            return NoContent();
+        }
     }
 }

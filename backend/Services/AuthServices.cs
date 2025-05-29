@@ -31,12 +31,16 @@ public class AuthService
         var user = new AspNetUser
         {
             Id = Guid.NewGuid().ToString(),
+            FullName = model.FullName,
             UserName = model.UserName,
             NormalizedUserName = model.UserName.ToUpper(),
             Email = model.Email,
             NormalizedEmail = model.Email.ToUpper(),
             PasswordHash = passwordHash,
             SecurityStamp = Guid.NewGuid().ToString(),
+            PhoneNumber = model.PhoneNumber,
+            IsTeacher = model.Role.ToLower() == "teacher",
+            IsStudent = model.Role.ToLower() == "student"
             // thêm các trường khác nếu cần
         };
 
@@ -86,7 +90,7 @@ public class AuthService
 
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Name, user.Email)
