@@ -1,17 +1,9 @@
 using backend.Data;
+using backend.Dtos;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 namespace backend.Repositories
 {
-    public interface ICourseRepositories
-    {
-        Task<IEnumerable<Course>> GetAllCoursesAsync();
-        Task<Course?> GetCourseByIdAsync(string id);
-        Task AddCourseAsync(Course course);
-        Task UpdateCourseAsync(Course course);
-        Task DeleteCourseAsync(string CourseId);
-    }
-
     public class CourseRepositories : ICourseRepositories
     {
         private readonly CMContext _context;
@@ -19,21 +11,34 @@ namespace backend.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<Course>> GetAllCoursesAsync()
+        public async Task<IEnumerable<CourseDto>> GetAllCoursesAsync()
         {
-            return await _context.Courses.Include(c => c.Teacher).ToListAsync();
+            return await _context.Courses
+            .Include(c => c.Teacher)
+            .Select(static c => new CourseDto
+            {
+                CourseName = c.CourseName,
+                Description = c.Description,
+                Price = c.Price,
+                MaxStudentQuantity =c.MaxStudentQuantity,
+                StartDate = (DateTime)c.StartDate,
+                EndDate = (DateTime)c.EndDate,
+            })
+            .ToListAsync();
 
         }
         public async Task AddCourseAsync(Course course)
         {
+            
             course.CourseId = Guid.NewGuid().ToString();
-            course.CreateDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
+            course.CreateDate = DateTime.UtcNow;
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
         }
         public async Task UpdateCourseAsync(Course course)
         {
-            course.UpdateDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
+            course.UpdateDate = DateTime.UtcNow;
+            // DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
             _context.Courses.Update(course);
             await _context.SaveChangesAsync();
         }

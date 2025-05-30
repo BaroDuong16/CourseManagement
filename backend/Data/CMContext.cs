@@ -36,31 +36,13 @@ public partial class CMContext : DbContext
     public virtual DbSet<Room> Rooms { get; set; }
 
     public virtual DbSet<RoomCourse> RoomCourses { get; set; }
-    // public virtual DbSet<AspNetUserRole> AspNetUserRole { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+// #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=CourseManagement;Username=postgres;Password=bao23456");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.Entity<AspNetUserRole>(entity =>
-        // {
-        //     entity.ToTable("AspNetUserRoles");
-        //     entity.HasKey(ur => new { ur.UserId, ur.RoleId });
-
-        //     entity.HasOne(d => d.AspNetRole).WithMany(p => p.AspNetUserRoles)
-        //         .HasForeignKey(e => e.RoleId)
-        //         .OnDelete(DeleteBehavior.ClientSetNull)
-        //         .HasConstraintName("AspNetUserRoles_RoleId_fkey")
-        //         .IsRequired();
-
-        //     entity.HasOne(d => d.AspNetUser).WithMany(p => p.AspNetUserRoles)
-        //         .HasForeignKey(e => e.UserId)
-        //         .OnDelete(DeleteBehavior.ClientSetNull)
-        //         .HasConstraintName("AspNetUserRoles_UserId_fkey")
-        //         .IsRequired();
-        // });
         modelBuilder.Entity<AspNetRole>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("AspNetRoles_pkey");
@@ -146,15 +128,15 @@ public partial class CMContext : DbContext
             entity.HasKey(e => e.CourseId).HasName("Courses_pkey");
 
             entity.Property(e => e.CourseId).HasMaxLength(128);
-            entity.Property(e => e.CreateDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.CreateDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.CreatedUserId).HasMaxLength(128);
-            entity.Property(e => e.EndDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.EndDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.Price).HasPrecision(15, 5);
-            entity.Property(e => e.StartDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.StartDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.TeacherId)
                 .HasMaxLength(128)
                 .HasColumnName("TeacherId ");
-            entity.Property(e => e.UpdateDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.UpdateDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.UpdatedUserId).HasMaxLength(128);
 
             entity.HasOne(d => d.Teacher).WithMany(p => p.Courses)
@@ -191,9 +173,9 @@ public partial class CMContext : DbContext
             entity.HasKey(e => e.RoomId).HasName("Rooms_pkey");
 
             entity.Property(e => e.RoomId).HasMaxLength(128);
-            entity.Property(e => e.CreateDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.CreateDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.CreatedUserId).HasMaxLength(128);
-            entity.Property(e => e.UpdateDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.UpdateDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.UpdatedUserId).HasMaxLength(128);
         });
 

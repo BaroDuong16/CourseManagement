@@ -31,7 +31,7 @@ namespace backend.Controllers
             if (string.IsNullOrEmpty(teacherId))
             return Unauthorized("User not authenticated.");
 
-    // 🔍 Kiểm tra xem ID có tồn tại trong bảng AspNetUsers không
+            //  Kiểm tra xem ID có tồn tại trong bảng AspNetUsers không
             var teacherExists = await _context.AspNetUsers.AnyAsync(u => u.Id == teacherId);
             if (!teacherExists)
                 return BadRequest($"teacherId from token: {teacherId}");
@@ -42,10 +42,10 @@ namespace backend.Controllers
                 Description = courseDto.Description,
                 Price = courseDto.Price,
                 MaxStudentQuantity = courseDto.MaxStudentQuantity,
-                StartDate = DateTime.SpecifyKind(courseDto.StartDate, DateTimeKind.Unspecified),
-                EndDate = DateTime.SpecifyKind(courseDto.EndDate, DateTimeKind.Unspecified),
+                StartDate = courseDto.StartDate,
+                EndDate = courseDto.EndDate,
                 TeacherId = teacherId,
-                CreateDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified),
+                CreateDate = DateTime.UtcNow,
                 CreatedUserId = _userService.GetUserId()
             };
 
@@ -53,7 +53,7 @@ namespace backend.Controllers
             return Ok(course);
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetAllCourses()
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllCourses()
         {
             var courses = await _courseRepo.GetAllCoursesAsync();
             return Ok(courses);
@@ -76,9 +76,9 @@ namespace backend.Controllers
             course.Description = updatedCourse.Description;
             course.Price = updatedCourse.Price;
             course.MaxStudentQuantity = updatedCourse.MaxStudentQuantity;
-            course.StartDate = DateTime.SpecifyKind(updatedCourse.StartDate, DateTimeKind.Unspecified);
-            course.EndDate =DateTime.SpecifyKind(updatedCourse.EndDate, DateTimeKind.Unspecified);
-            course.UpdateDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);;
+            course.StartDate = updatedCourse.StartDate;
+            course.EndDate = updatedCourse.EndDate;
+            course.UpdateDate = DateTime.UtcNow;
             course.UpdatedUserId = _userService.GetUserId();
 
             await _courseRepo.UpdateCourseAsync(course);

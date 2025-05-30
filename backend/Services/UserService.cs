@@ -4,16 +4,9 @@ using backend.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Validations;
 
-public interface IUserService
-{
-    string GetUserId();
-    string GetUserRole();
-    bool IsInRole(string roleName);
-}
-
 public class UserService : IUserService
 {
-     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public UserService(IHttpContextAccessor httpContextAccessor)
     {
