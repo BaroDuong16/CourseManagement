@@ -151,10 +151,10 @@ public partial class CMContext : DbContext
 
             entity.Property(e => e.CourseStudentId).HasMaxLength(128);
             entity.Property(e => e.CourseId).HasMaxLength(128);
-            entity.Property(e => e.CreateDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.CreateDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.CreatedUserId).HasMaxLength(128);
             entity.Property(e => e.StudentId).HasMaxLength(128);
-            entity.Property(e => e.UpdateDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.UpdateDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.UpdatedUserId).HasMaxLength(128);
 
             entity.HasOne(d => d.Course).WithMany(p => p.CourseStudents)

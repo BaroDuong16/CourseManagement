@@ -70,6 +70,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICourseRepositories, CourseRepositories>();
 builder.Services.AddScoped<IRoomRepositories, RoomRepositories>();
+builder.Services.AddScoped<ICourseStudentRepositories,CourseStudentRepositories>();
 builder.Services.AddHttpContextAccessor();
 
 
