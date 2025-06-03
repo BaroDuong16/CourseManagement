@@ -173,6 +173,7 @@ public partial class CMContext : DbContext
             entity.HasKey(e => e.RoomId).HasName("Rooms_pkey");
 
             entity.Property(e => e.RoomId).HasMaxLength(128);
+            entity.Property(e => e.RoomName).HasMaxLength(128);  
             entity.Property(e => e.CreateDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.CreatedUserId).HasMaxLength(128);
             entity.Property(e => e.UpdateDate).HasColumnType("timestamp(6) with time zone");
@@ -185,10 +186,10 @@ public partial class CMContext : DbContext
 
             entity.Property(e => e.RoomCourseId).HasMaxLength(128);
             entity.Property(e => e.CourseId).HasMaxLength(128);
-            entity.Property(e => e.CreateDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.CreateDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.CreatedUserId).HasMaxLength(128);
             entity.Property(e => e.RoomId).HasMaxLength(128);
-            entity.Property(e => e.UpdateDate).HasColumnType("timestamp(6) without time zone");
+            entity.Property(e => e.UpdateDate).HasColumnType("timestamp(6) with time zone");
             entity.Property(e => e.UpdatedUserId).HasMaxLength(128);
 
             entity.HasOne(d => d.Course).WithMany(p => p.RoomCourses)

@@ -7,7 +7,7 @@ namespace backend.Repositories
     public interface ICourseRepositories
     {
         Task<IEnumerable<CourseDto>> GetAllCoursesAsync();
-        Task<Course?> GetCourseByIdAsync(string id);
+        Task<CourseDetailDto?> GetCourseByIdAsync(string id);
         Task AddCourseAsync(Course course);
         Task UpdateCourseAsync(Course course);
         Task DeleteCourseAsync(string CourseId);

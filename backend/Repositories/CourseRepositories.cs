@@ -52,12 +52,32 @@ namespace backend.Repositories
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
         }
-        public async Task<Course?> GetCourseByIdAsync(string courseId)
+        public async Task<CourseDetailDto?> GetCourseByIdAsync(string courseId)
         {
-            return await _context.Courses
+            var course = await _context.Courses
+                .Include(c => c.RoomCourses).ThenInclude(rc => rc.Room)
                 .Include(c => c.CourseStudents)
-                .Include(c => c.RoomCourses)
                 .FirstOrDefaultAsync(c => c.CourseId == courseId);
+            if (course == null)
+                return null;
+
+            return new CourseDetailDto
+            {
+                CourseId = course.CourseId,
+                CourseName = course.CourseName,
+                Description = course.Description,
+                Price = course.Price,
+                MaxStudentQuantity = course.MaxStudentQuantity,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate,
+                Rooms = course.RoomCourses.Select(rc => new RoomDto
+                {
+                    RoomName = rc.Room.RoomName,
+                    Description = rc.Room.Description,
+                    CreateDate = (DateTime)rc.Room.CreateDate
+                }).ToList(),
+                RegisteredStudentCount = course.CourseStudents.Count
+            };
         }
     }
 }

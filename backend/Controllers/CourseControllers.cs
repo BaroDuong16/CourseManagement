@@ -66,33 +66,33 @@ namespace backend.Controllers
             return course != null ? Ok(course) : NotFound();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourse(string id, [FromBody] CourseDto updatedCourse)
-        {
-            var course = await _courseRepo.GetCourseByIdAsync(id);
-            if (course == null || course.TeacherId != _userService.GetUserId()) return Forbid();
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> UpdateCourse(string id, [FromBody] CourseDto updatedCourse)
+        // {
+        //     var course = await _courseRepo.GetCourseByIdAsync(id);
+        //     if (course == null || course.TeacherId != _userService.GetUserId()) return Forbid();
 
-            course.CourseName = updatedCourse.CourseName;
-            course.Description = updatedCourse.Description;
-            course.Price = updatedCourse.Price;
-            course.MaxStudentQuantity = updatedCourse.MaxStudentQuantity;
-            course.StartDate = updatedCourse.StartDate;
-            course.EndDate = updatedCourse.EndDate;
-            course.UpdateDate = DateTime.UtcNow;
-            course.UpdatedUserId = _userService.GetUserId();
+        //     course.CourseName = updatedCourse.CourseName;
+        //     course.Description = updatedCourse.Description;
+        //     course.Price = updatedCourse.Price;
+        //     course.MaxStudentQuantity = updatedCourse.MaxStudentQuantity;
+        //     course.StartDate = updatedCourse.StartDate;
+        //     course.EndDate = updatedCourse.EndDate;
+        //     course.UpdateDate = DateTime.UtcNow;
+        //     course.UpdatedUserId = _userService.GetUserId();
 
-            await _courseRepo.UpdateCourseAsync(course);
-            return Ok(course);
-        }
+        //     await _courseRepo.UpdateCourseAsync(course);
+        //     return Ok(course);
+        // }
 
-        [HttpDelete("{CourseId}")]
-        public async Task<IActionResult> DeleteCourse(string CourseId)
-        {
-            var course = await _courseRepo.GetCourseByIdAsync(CourseId);
-            if (course == null || course.TeacherId != _userService.GetUserId()) return Forbid();
+        // [HttpDelete("{CourseId}")]
+        // public async Task<IActionResult> DeleteCourse(string CourseId)
+        // {
+        //     var course = await _courseRepo.GetCourseByIdAsync(CourseId);
+        //     if (course == null || course.TeacherId != _userService.GetUserId()) return Forbid();
 
-            await _courseRepo.DeleteCourseAsync(course.CourseId);
-            return NoContent();
-        }
+        //     await _courseRepo.DeleteCourseAsync(course.CourseId);
+        //     return NoContent();
+        // }
     }
 }

@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\CoreUltra7\\Desktop\\Workfile\\CourseManagement\\backend\\backend.csproj": {}
+    "/home/techpro/Desktop/CourseManagement/backend/backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\CoreUltra7\\Desktop\\Workfile\\CourseManagement\\backend\\backend.csproj": {
+    "/home/techpro/Desktop/CourseManagement/backend/backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\CoreUltra7\\Desktop\\Workfile\\CourseManagement\\backend\\backend.csproj",
+        "projectUniqueName": "/home/techpro/Desktop/CourseManagement/backend/backend.csproj",
         "projectName": "backend",
-        "projectPath": "C:\\Users\\CoreUltra7\\Desktop\\Workfile\\CourseManagement\\backend\\backend.csproj",
-        "packagesPath": "C:\\Users\\CoreUltra7\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\CoreUltra7\\Desktop\\Workfile\\CourseManagement\\backend\\obj\\",
+        "projectPath": "/home/techpro/Desktop/CourseManagement/backend/backend.csproj",
+        "packagesPath": "/home/techpro/.nuget/packages/",
+        "outputPath": "/home/techpro/Desktop/CourseManagement/backend/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\CoreUltra7\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/techpro/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,13 +32,7 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -102,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.116/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
