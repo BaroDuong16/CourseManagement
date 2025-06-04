@@ -33,7 +33,8 @@ namespace backend.Repositories
                         CreateDate = (DateTime)rc.Room.CreateDate
                     }).ToList(),
                     RegisteredStudentCount = c.CourseStudents.Count,
-                    TeacherName = c.Teacher.FullName
+                    TeacherName = c.Teacher.FullName,
+                    PhoneNumber = c.Teacher.PhoneNumber
                 })
                 .ToListAsync();
         }

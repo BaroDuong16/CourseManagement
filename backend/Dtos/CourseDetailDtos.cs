@@ -14,8 +14,8 @@ namespace backend.Dtos
         public int RegisteredStudentCount { get; set; }
 
         public string? TeacherName { get; set; }
-        public string? TeacherPhone { get; set; }
-        public string? CreatedUserName { get; set; }
-        public string? UpdatedUserName { get; set; }
+        public string? PhoneNumber { get; set; }
+        // public string? CreatedUserName { get; set; }
+        // public string? UpdatedUserName { get; set; }
     }
 }
