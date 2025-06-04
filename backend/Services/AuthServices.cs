@@ -20,7 +20,7 @@ public class AuthService
     }
 
     // Register user
-    public async Task<bool> RegisterAsync(RegisterRequest model)
+    public async Task<bool> RegisterAsync(RegisterReq model)
     {
         if (await _context.AspNetUsers.AnyAsync(u => u.Email == model.Email))
             return false; // Email đã tồn tại
@@ -61,7 +61,7 @@ public class AuthService
     }
 
     // Login user và trả về token
-    public async Task<string> LoginAsync(LoginRequest model)
+    public async Task<string> LoginAsync(LoginReq model)
     {
         var user = await _context.AspNetUsers
             .Include(u => u.Roles)

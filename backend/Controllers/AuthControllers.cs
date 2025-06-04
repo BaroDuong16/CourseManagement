@@ -14,7 +14,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequest model)
+    public async Task<IActionResult> Register(RegisterReq model)
     {
         var result = await _authService.RegisterAsync(model);
         if (!result)
@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequest model)
+    public async Task<IActionResult> Login(LoginReq model)
     {
         var token = await _authService.LoginAsync(model);
         if (token == null)

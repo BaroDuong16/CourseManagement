@@ -1,6 +1,6 @@
 namespace backend.Dtos
 {
-    public class RegisterRequest
+    public class RegisterReq
     {
         public string? FullName { get; set; }
         public string? UserName { get; set; }

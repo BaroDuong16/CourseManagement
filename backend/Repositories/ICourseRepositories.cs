@@ -6,8 +6,8 @@ namespace backend.Repositories
 {
     public interface ICourseRepositories
     {
-        Task<IEnumerable<CourseDetailDto>> GetAllCoursesAsync();
-        Task<CourseDetailDto?> GetCourseByIdAsync(string id);
+        Task<IEnumerable<CourseDetailRes>> GetAllCoursesAsync();
+        Task<CourseDetailRes?> GetCourseByIdAsync(string id);
         Task<Course?> GetCourseEntityByIdAsync(string courseId);
         Task AddCourseAsync(Course course);
         Task UpdateCourseAsync(Course course);

@@ -11,13 +11,13 @@ namespace backend.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<CourseDetailDto>> GetAllCoursesAsync()
+        public async Task<IEnumerable<CourseDetailRes>> GetAllCoursesAsync()
         {
             return await _context.Courses
                 .Include(c => c.RoomCourses).ThenInclude(rc => rc.Room)
                 .Include(c => c.CourseStudents)
                 .Include(c => c.Teacher)
-                .Select(c => new CourseDetailDto
+                .Select(c => new CourseDetailRes
                 {
                     CourseId = c.CourseId,
                     CourseName = c.CourseName,
@@ -32,7 +32,8 @@ namespace backend.Repositories
                         Description = rc.Room.Description,
                         CreateDate = (DateTime)rc.Room.CreateDate
                     }).ToList(),
-                    RegisteredStudentCount = c.CourseStudents.Count
+                    RegisteredStudentCount = c.CourseStudents.Count,
+                    TeacherName = c.Teacher.FullName
                 })
                 .ToListAsync();
         }
@@ -66,7 +67,7 @@ namespace backend.Repositories
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
         }
-        public async Task<CourseDetailDto?> GetCourseByIdAsync(string courseId)
+        public async Task<CourseDetailRes?> GetCourseByIdAsync(string courseId)
         {
             var course = await _context.Courses
                 .Include(c => c.RoomCourses).ThenInclude(rc => rc.Room)
@@ -75,7 +76,7 @@ namespace backend.Repositories
             if (course == null)
                 return null;
 
-            return new CourseDetailDto
+            return new CourseDetailRes
             {
                 CourseId = course.CourseId,
                 CourseName = course.CourseName,

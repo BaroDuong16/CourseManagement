@@ -53,7 +53,7 @@ namespace backend.Controllers
         }
         [Authorize(Roles = "Teacher,Student")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CourseDetailDto>>> GetAllCourses()
+        public async Task<ActionResult<IEnumerable<CourseDetailRes>>> GetAllCourses()
         {
             var courses = await _courseRepo.GetAllCoursesAsync();
             return Ok(courses);

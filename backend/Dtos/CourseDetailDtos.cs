@@ -1,6 +1,6 @@
 namespace backend.Dtos
 {
-    public class CourseDetailDto
+    public class CourseDetailRes
     {
         public string CourseId { get; set; } = null!;
         public string CourseName { get; set; } = null!;
@@ -13,5 +13,9 @@ namespace backend.Dtos
         public List<RoomDto> Rooms { get; set; } = new();
         public int RegisteredStudentCount { get; set; }
 
+        public string? TeacherName { get; set; }
+        public string? TeacherPhone { get; set; }
+        public string? CreatedUserName { get; set; }
+        public string? UpdatedUserName { get; set; }
     }
 }
