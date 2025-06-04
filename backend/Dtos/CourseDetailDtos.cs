@@ -12,5 +12,6 @@ namespace backend.Dtos
 
         public List<RoomDto> Rooms { get; set; } = new();
         public int RegisteredStudentCount { get; set; }
+
     }
 }

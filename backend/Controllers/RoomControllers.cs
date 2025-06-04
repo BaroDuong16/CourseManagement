@@ -39,7 +39,7 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RoomDto>>> GetAllRooms()
+        public async Task<ActionResult<IEnumerable<RoomDetailDto>>> GetAllRooms()
         {
             var rooms = await _roomRepo.GetAllRoomsAsync();
             return Ok(rooms);
@@ -55,7 +55,7 @@ namespace backend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRoom(string id, [FromBody] RoomDto updatedRoom)
         {
-            var room = await _roomRepo.GetRoomByIdAsync(id);
+            var room = await _roomRepo.GetRoomEntityByIdAsync(id);
             if (room == null) return NotFound();
 
             room.RoomName = updatedRoom.RoomName;
@@ -64,7 +64,9 @@ namespace backend.Controllers
             room.UpdatedUserId = _userService.GetUserId();
 
             await _roomRepo.UpdateRoomAsync(room);
-            return Ok(room);
+
+            var result = await _roomRepo.GetRoomByIdAsync(id);
+            return Ok(result);
         }
 
         [HttpDelete("{RoomId}")]

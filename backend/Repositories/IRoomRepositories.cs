@@ -6,10 +6,12 @@ namespace backend.Repositories
 {
     public interface IRoomRepositories
     {
-        Task<IEnumerable<RoomDto>> GetAllRoomsAsync();
-        Task<Room?> GetRoomByIdAsync(string id);
+        Task<IEnumerable<RoomDetailDto>> GetAllRoomsAsync();
+        Task<RoomDetailDto?> GetRoomByIdAsync(string id);
+        Task<Room?> GetRoomEntityByIdAsync(string roomId);
         Task AddRoomAsync(Room room);
         Task UpdateRoomAsync(Room course);
         Task DeleteRoomAsync(string RoomId);
+
     }
 }

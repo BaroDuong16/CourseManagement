@@ -11,24 +11,56 @@ namespace backend.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<RoomDto>> GetAllRoomsAsync()
+        public async Task<IEnumerable<RoomDetailDto>> GetAllRoomsAsync()
         {
             return await _context.Rooms
-            .Include(r => r.RoomCourses)
-            .Select(static c => new RoomDto
+            .Include(r => r.RoomCourses).ThenInclude(rc => rc.Course)
+            .Select(static c => new RoomDetailDto
             {
+                RoomId = c.RoomId,
                 RoomName = c.RoomName,
                 Description = c.Description,
                 CreateDate = (DateTime)c.CreateDate,
-            })
-            .ToListAsync();
+                Course = c.RoomCourses.Select(rc => new CourseDto
+                {
+                    CourseName = rc.Course.CourseName,
+                    Description = rc.Course.Description,
+                    Price = rc.Course.Price,
+                    MaxStudentQuantity = rc.Course.MaxStudentQuantity,
+                    StartDate = (DateTime)rc.Course.StartDate,
+                    EndDate = (DateTime)rc.Course.EndDate
+                }).ToList()
+            }).ToListAsync();
         }
 
-        public async Task<Room?> GetRoomByIdAsync(string roomId)
+        public async Task<RoomDetailDto?> GetRoomByIdAsync(string roomId)
+        {
+            var room = await _context.Rooms
+                .Include(r => r.RoomCourses).ThenInclude(rc => rc.Course)
+                .FirstOrDefaultAsync(r => r.RoomId == roomId);
+            if (room == null)
+                return null;
+            return new RoomDetailDto
+            {
+                RoomId = room.RoomId,
+                RoomName = room.RoomName,
+                Description = room.Description,
+                CreateDate = room.CreateDate,
+                Course = room.RoomCourses.Select(rc => new CourseDto
+                {
+                    CourseName = rc.Course.CourseName,
+                    Description = rc.Course.Description,
+                    Price = rc.Course.Price,
+                    MaxStudentQuantity = rc.Course.MaxStudentQuantity,
+                    StartDate = (DateTime)rc.Course.StartDate,
+                    EndDate = (DateTime)rc.Course.EndDate
+                }).ToList()
+            };
+        }
+        public async Task<Room?> GetRoomEntityByIdAsync(string roomId)
         {
             return await _context.Rooms
-                .Include(r => r.RoomCourses)
-                .FirstOrDefaultAsync(r => r.RoomId == roomId);
+            .FirstOrDefaultAsync(c => c.RoomId == roomId);
         }
 
         public async Task AddRoomAsync(Room room)
