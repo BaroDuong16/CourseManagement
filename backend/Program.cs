@@ -34,6 +34,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp",
+                policy =>
+            {
+            policy.WithOrigins("http://localhost:4200") // frontend origin
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+            });
+            });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
             {
@@ -93,6 +104,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication(); // Enables authentication middleware
 app.UseAuthorization();
+
+app.UseCors("AllowAngularApp");
 
 app.MapControllers();
 
