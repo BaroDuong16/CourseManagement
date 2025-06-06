@@ -1,1 +1,10 @@
-<p>course-table works!</p>
+<h2>Courses</h2>
+<div *ngFor="let course of courses" class="course-card">
+  <h3>{{ course.courseName }}</h3>
+  <p>Teacher: {{ course.teacherName }} | Phone: {{ course.phoneNumber }}</p>
+  <p>Students: {{ course.registeredStudentCount }} / {{ course.maxStudentQuantity }}</p>
+  <p>Time: {{ course.startDate }} → {{ course.endDate }}</p>
+  <div *ngFor="let room of course.rooms">
+    <p>Room: {{ room.roomName }} ({{ room.description }})</p>
+  </div>
+</div>

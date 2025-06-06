@@ -1,0 +1,20 @@
+
+
+.login-form {
+  max-width: 300px;
+  width: 100%;
+  justify-content: center; /* căn giữa ngang */
+  align-items: center;    
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}

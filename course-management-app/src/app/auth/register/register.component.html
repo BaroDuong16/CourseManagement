@@ -1,1 +1,109 @@
-<p>register works!</p>
+
+  <form nz-form (ngSubmit)="register()" class="register-form">
+    <h2 style="text-align:center;">Register</h2>
+
+    <!-- Fullname -->
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your fullname!">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            type="text"
+            nz-input
+            placeholder="Fullname"
+            name="fullname"
+            [(ngModel)]="user.fullname"
+            required
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Username -->
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your username!">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            type="text"
+            nz-input
+            placeholder="Username"
+            name="username"
+            [(ngModel)]="user.username"
+            required
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Phone Number -->
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your phone number!">
+        <nz-input-group nzPrefixIcon="phone">
+          <input
+            type="text"
+            nz-input
+            placeholder="Phone Number"
+            name="phonenumber"
+            [(ngModel)]="user.phonenumber"
+            required
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Email -->
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your email!">
+        <nz-input-group nzPrefixIcon="mail">
+          <input
+            type="text"
+            nz-input
+            placeholder="Email"
+            name="email"
+            [(ngModel)]="user.email"
+            required
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Password -->
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your password!">
+        <nz-input-group nzPrefixIcon="lock">
+          <input
+            type="password"
+            nz-input
+            placeholder="Password"
+            name="password"
+            [(ngModel)]="user.password"
+            required
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Role -->
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your role!">
+        <nz-input-group nzPrefixIcon="idcard">
+          <input
+            type="text"
+            nz-input
+            placeholder="Role"
+            name="role"
+            [(ngModel)]="user.role"
+            required
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Submit -->
+    <button nz-button class="register-form-button register-form-margin" [nzType]="'primary'" htmlType="submit">
+      Register
+    </button>
+    <div style="text-align:center; margin-top: 10px;">
+      Already have an account? <a routerLink="/">Login</a>
+    </div>
+  </form>
+
