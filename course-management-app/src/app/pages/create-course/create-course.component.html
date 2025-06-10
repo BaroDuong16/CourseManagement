@@ -1,0 +1,105 @@
+<h2 style="text-align: center;">Create New Course</h2>
+
+<form nz-form [formGroup]="courseForm" (ngSubmit)="onSubmit()" class="course-form">
+  <!-- Course Name -->
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input the course name!">
+      <nz-input-group nzPrefixIcon="book">
+        <input
+          nz-input
+          placeholder="Course Name"
+          formControlName="courseName"
+          required
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Description -->
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input the description!">
+      <nz-input-group nzPrefixIcon="file-text">
+        <textarea
+          nz-input
+          rows="3"
+          placeholder="Description"
+          formControlName="description"
+          required
+        ></textarea>
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Price -->
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Price must be zero or more!">
+      <nz-input-group nzPrefixIcon="dollar">
+        <input
+          type="number"
+          min="0"
+          nz-input
+          placeholder="Price"
+          formControlName="price"
+          required
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Max Students -->
+  <nz-form-item>
+    <nz-form-control nzErrorTip="At least 1 student required!">
+      <nz-input-group nzPrefixIcon="team">
+        <input
+          type="number"
+          min="1"
+          nz-input
+          placeholder="Max Students"
+          formControlName="maxStudentQuantity"
+          required
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Start Date -->
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please select start date!">
+      <nz-input-group nzPrefixIcon="calendar">
+        <input
+          type="date"
+          nz-input
+          placeholder="Start Date"
+          formControlName="startDate"
+          required
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- End Date -->
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please select end date!">
+      <nz-input-group nzPrefixIcon="calendar">
+        <input
+          type="date"
+          nz-input
+          placeholder="End Date"
+          formControlName="endDate"
+          required
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Submit -->
+  <button
+    nz-button
+    [nzType]="'primary'"
+    [nzLoading]="loading"
+    class="course-form-button course-form-margin"
+    [disabled]="courseForm.invalid || loading"
+  >
+    Create Course
+  </button>
+</form>

@@ -25,12 +25,25 @@ export class LoginComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  login() {
+    login() {
     this.auth.login(this.credentials).subscribe({
       next: (res: any) => {
+        console.log('Login response:', res); // 👈 In ra toàn bộ response
         this.auth.saveToken(res.token);
-        alert('Login successful!');
-        this.router.navigate(['/welcome']);
+
+        const token = this.auth.getToken();
+        console.log('Saved token:', token); // 👈 Xác nhận token được lưu
+
+        const roles = this.auth.getRolesFromToken();
+        console.log('Decoded roles:', roles); // 👈 Phải in ra ["Teacher"] hoặc ["Student"]
+
+        if (roles.includes('Teacher')) {
+          this.router.navigate(['/course-table']);
+        } else if (roles.includes('Student')) {
+          this.router.navigate(['/welcome']);
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       error: (err) => alert(err.error)
     });

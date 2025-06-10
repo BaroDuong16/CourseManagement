@@ -101,11 +101,10 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
     });
 }
+app.UseCors("AllowAngularApp");
 
 app.UseAuthentication(); // Enables authentication middleware
 app.UseAuthorization();
-
-app.UseCors("AllowAngularApp");
 
 app.MapControllers();
 

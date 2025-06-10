@@ -1,10 +1,56 @@
-<h2>Courses</h2>
-<div *ngFor="let course of courses" class="course-card">
-  <h3>{{ course.courseName }}</h3>
-  <p>Teacher: {{ course.teacherName }} | Phone: {{ course.phoneNumber }}</p>
-  <p>Students: {{ course.registeredStudentCount }} / {{ course.maxStudentQuantity }}</p>
-  <p>Time: {{ course.startDate }} → {{ course.endDate }}</p>
-  <div *ngFor="let room of course.rooms">
-    <p>Room: {{ room.roomName }} ({{ room.description }})</p>
+<h2 style="display: flex; justify-content: space-between; align-items: center;">
+  <span>Courses</span>
+
+  <!-- Chỉ Teacher mới thấy nút này -->
+  <div *ngIf="isTeacher()" style="text-align: right; margin-bottom: 16px;">
+    <button nz-button nzType="primary" [routerLink]="['/create-course']">
+      <span nz-icon nzType="plus"></span>
+      Create Course
+    </button>
   </div>
+</h2>
+
+<div *ngFor="let course of courses" style="margin-bottom: 24px;">
+  <nz-card [nzTitle]="course.courseName" [nzExtra]="extraTpl" [nzBordered]="false" style="width: 100%;">
+    <ng-template #extraTpl>
+      <span><strong>Teacher:</strong> {{ course.teacherName }} | <strong>Phone:</strong> {{ course.phoneNumber }}</span>
+    </ng-template>
+
+    <p><strong>Description:</strong> {{ course.description }}</p>
+    <p>
+      <strong>Students:</strong> 
+      <nz-tag color="blue">{{ course.registeredStudentCount }} / {{ course.maxStudentQuantity }}</nz-tag>
+    </p>
+    <p><strong>Time:</strong> {{ course.startDate | date:'shortDate' }} → {{ course.endDate | date:'shortDate' }}</p>
+    <p><strong>Price:</strong> {{ course.price | currency:'USD' }}</p>
+
+    <div *ngIf="course.rooms && course.rooms.length">
+      <p><strong>Rooms:</strong></p>
+      <ul>
+        <li *ngFor="let room of course.rooms">
+          {{ room.roomName }} ({{ room.description }})
+        </li>
+      </ul>
+    </div>
+
+    <nz-divider></nz-divider>
+
+    <nz-row *ngIf="isTeacher()" nzJustify="start" nzAlign="middle" nzGutter="16">
+      <nz-col>
+        <button nz-button nzType="primary" (click)="deleteCourse(course.courseId)" nzDanger>Delete</button>
+      </nz-col>
+      <nz-col>
+        <button nz-button [routerLink]="['/edit-course', course.courseId]">Edit</button>
+      </nz-col>
+      <nz-col>
+        <button nz-button [routerLink]="['/register-course', course.courseId]" nzType="default">Register</button>
+      </nz-col>
+    </nz-row>
+
+    <nz-row *ngIf="isStudent()" nzJustify="start" nzAlign="middle">
+      <nz-col>
+        <button nz-button [routerLink]="['/register-course', course.courseId]" nzType="primary">Register</button>
+      </nz-col>
+    </nz-row>
+  </nz-card>
 </div>

@@ -26,5 +26,10 @@ export const routes: Routes = [
     path: 'course-table', 
     loadChildren: () => import('./course-table/course-table.routes').then(m => m.COURSETABLE_ROUTES), 
     canActivate: [AuthGuard] 
+  },
+  {
+    path: 'create-course',
+    loadChildren: () => import('./pages/create-course/create-course.routes').then(m => m.CREATECOURSE_ROUTES),
+    canActivate: [AuthGuard] 
   }
 ];
