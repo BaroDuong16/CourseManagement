@@ -10,6 +10,9 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service'; 
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 @Component({
   selector: 'app-create-course',
   imports: [
@@ -21,6 +24,9 @@ import { CommonModule } from '@angular/common';
     NzButtonModule,
     NzDividerModule,
     NzGridModule,
+    RouterModule,
+    NzLayoutModule,
+    NzCheckboxModule,
   ],
   templateUrl: './create-course.component.html',
   styleUrl: './create-course.component.css'

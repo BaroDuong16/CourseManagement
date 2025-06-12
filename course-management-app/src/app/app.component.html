@@ -1,5 +1,5 @@
 <ng-container *ngIf="showNavbar; else emptyLayout">
-  <nz-layout *ngIf="showNavbar" class="app-layout">
+  <nz-layout *ngIf="showNavbar" class="app-layout" [ngStyle]="{ 'margin-left': isCollapsed ? '80px' : '256px' }">
     <nz-sider class="menu-sidebar"
       nzCollapsible
       nzWidth="256px"

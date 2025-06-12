@@ -10,11 +10,18 @@
 }
 
 .menu-sidebar {
-  position: relative;
+  position: fixed; 
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 256px; 
   z-index: 10;
-  min-height: 100vh;
+  height: 100vh;
   box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  transition: width 0.2s ease-in-out;
 }
+
+
 
 .header-trigger {
   height: 64px;
