@@ -28,7 +28,7 @@ public class AuthController : ControllerBase
         var token = await _authService.LoginAsync(model);
         if (token == null)
             return Unauthorized("Tên đăng nhập hoặc mật khẩu không đúng");
-        return Ok(new { Token = token });
+        return Ok(new { accessToken = token });
     }
 
     [Authorize(Roles = "Teacher")]

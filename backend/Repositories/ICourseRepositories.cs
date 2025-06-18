@@ -9,7 +9,7 @@ namespace backend.Repositories
         Task<IEnumerable<CourseDetailRes>> GetAllCoursesAsync();
         Task<CourseDetailRes?> GetCourseByIdAsync(string id);
         Task<Course?> GetCourseEntityByIdAsync(string courseId);
-        Task AddCourseAsync(Course course);
+        Task<Course> CreateCourseAsync(CourseDto dto, string teacherId);
         Task UpdateCourseAsync(Course course);
         Task DeleteCourseAsync(string CourseId);
         // Task<IEnumerable<CourseDetailDto>> SearchCoursesAsync(string? keyword, DateTime? from, DateTime? to);

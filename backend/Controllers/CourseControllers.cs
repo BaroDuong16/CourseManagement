@@ -22,35 +22,54 @@ namespace backend.Controllers
             _userService = userService;
             _context = context;
         }
+        // [Authorize(Roles = "Teacher")]
+        // [HttpPost("CreateCourse")]
+        // public async Task<IActionResult> CreateCourse([FromBody] CourseDto courseDto)
+        // {
+        //     var teacherId = _userService.GetUserId();
+        //     if (string.IsNullOrEmpty(teacherId))
+        //     return Unauthorized("User not authenticated.");
+
+        //     //  Kiểm tra xem ID có tồn tại trong bảng AspNetUsers không
+        //     var teacherExists = await _context.AspNetUsers.AnyAsync(u => u.Id == teacherId);
+        //     if (!teacherExists)
+        //         return BadRequest($"teacherId from token: {teacherId}");
+        //     var course = new Course
+        //     {
+        //         CourseId = Guid.NewGuid().ToString(),
+        //         CourseName = courseDto.CourseName,
+        //         Description = courseDto.Description,
+        //         Price = courseDto.Price,
+        //         MaxStudentQuantity = courseDto.MaxStudentQuantity,
+        //         StartDate = courseDto.StartDate,
+        //         EndDate = courseDto.EndDate,
+        //         TeacherId = teacherId,
+        //         CreateDate = DateTime.UtcNow,
+        //         CreatedUserId = _userService.GetUserId()
+        //     };
+
+        //     await _courseRepo.AddCourseAsync(course);
+        //     return Ok(course);
+        // }
         [Authorize(Roles = "Teacher")]
         [HttpPost("CreateCourse")]
         public async Task<IActionResult> CreateCourse([FromBody] CourseDto courseDto)
         {
             var teacherId = _userService.GetUserId();
             if (string.IsNullOrEmpty(teacherId))
-            return Unauthorized("User not authenticated.");
+                return Unauthorized("User not authenticated.");
 
-            //  Kiểm tra xem ID có tồn tại trong bảng AspNetUsers không
-            var teacherExists = await _context.AspNetUsers.AnyAsync(u => u.Id == teacherId);
-            if (!teacherExists)
-                return BadRequest($"teacherId from token: {teacherId}");
-            var course = new Course
+            try
             {
-                CourseId = Guid.NewGuid().ToString(),
-                CourseName = courseDto.CourseName,
-                Description = courseDto.Description,
-                Price = courseDto.Price,
-                MaxStudentQuantity = courseDto.MaxStudentQuantity,
-                StartDate = courseDto.StartDate,
-                EndDate = courseDto.EndDate,
-                TeacherId = teacherId,
-                CreateDate = DateTime.UtcNow,
-                CreatedUserId = _userService.GetUserId()
-            };
-
-            await _courseRepo.AddCourseAsync(course);
-            return Ok(course);
+                var createdCourse = await _courseRepo.CreateCourseAsync(courseDto, teacherId);
+                return Ok(createdCourse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
         [Authorize(Roles = "Teacher,Student")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CourseDetailRes>>> GetAllCourses()

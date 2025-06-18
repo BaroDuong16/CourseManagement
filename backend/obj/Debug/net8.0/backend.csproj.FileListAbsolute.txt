@@ -291,3 +291,10 @@ C:/Users/CoreUltra7/Desktop/Workfile/CourseManagement/backend/obj/Debug/net8.0/r
 C:/Users/CoreUltra7/Desktop/Workfile/CourseManagement/backend/obj/Debug/net8.0/backend.pdb
 C:/Users/CoreUltra7/Desktop/Workfile/CourseManagement/backend/obj/Debug/net8.0/backend.genruntimeconfig.cache
 C:/Users/CoreUltra7/Desktop/Workfile/CourseManagement/backend/obj/Debug/net8.0/ref/backend.dll
+/home/techpro/Desktop/CourseManagement/backend/bin/Debug/net8.0/Microsoft.Extensions.AI.Abstractions.dll
+/home/techpro/Desktop/CourseManagement/backend/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/home/techpro/Desktop/CourseManagement/backend/bin/Debug/net8.0/Microsoft.Extensions.Hosting.Abstractions.dll
+/home/techpro/Desktop/CourseManagement/backend/bin/Debug/net8.0/ModelContextProtocol.dll
+/home/techpro/Desktop/CourseManagement/backend/bin/Debug/net8.0/ModelContextProtocol.AspNetCore.dll
+/home/techpro/Desktop/CourseManagement/backend/bin/Debug/net8.0/ModelContextProtocol.Core.dll
+/home/techpro/Desktop/CourseManagement/backend/bin/Debug/net8.0/System.Net.ServerSentEvents.dll

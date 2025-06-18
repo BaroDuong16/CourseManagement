@@ -38,13 +38,38 @@ namespace backend.Repositories
                 })
                 .ToListAsync();
         }
-        public async Task AddCourseAsync(Course course)
+        // public async Task AddCourseAsync(Course course)
+        // {
+        //     course.CourseId = Guid.NewGuid().ToString();
+        //     course.CreateDate = DateTime.UtcNow;
+        //     _context.Courses.Add(course);
+        //     await _context.SaveChangesAsync();
+        // }
+        public async Task<Course> CreateCourseAsync(CourseDto dto, string teacherId)
         {
-            
-            course.CourseId = Guid.NewGuid().ToString();
-            course.CreateDate = DateTime.UtcNow;
+            // Kiểm tra teacherId có tồn tại
+            var teacherExists = await _context.AspNetUsers.AnyAsync(u => u.Id == teacherId);
+            if (!teacherExists)
+                throw new Exception($"TeacherId from token: {teacherId} không tồn tại");
+
+            var course = new Course
+            {
+                CourseId = Guid.NewGuid().ToString(),
+                CourseName = dto.CourseName,
+                Description = dto.Description,
+                Price = dto.Price,
+                MaxStudentQuantity = dto.MaxStudentQuantity,
+                StartDate = dto.StartDate,
+                EndDate = dto.EndDate,
+                TeacherId = teacherId,
+                CreateDate = DateTime.UtcNow,
+                CreatedUserId = teacherId
+            };
+
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
+
+            return course;
         }
         public async Task UpdateCourseAsync(Course course)
         {

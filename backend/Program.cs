@@ -8,6 +8,7 @@ using backend.Repositories;
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<CMContext>(options =>
@@ -77,6 +78,11 @@ builder.Services.AddSwaggerGen(options =>
                 });
             });
 
+builder.Services
+    .AddMcpServer()
+    .WithHttpTransport()
+    .WithTools<CourseTool>();
+
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICourseRepositories, CourseRepositories>();
@@ -106,6 +112,7 @@ app.UseCors("AllowAngularApp");
 app.UseAuthentication(); // Enables authentication middleware
 app.UseAuthorization();
 
+app.MapMcp();
 app.MapControllers();
 
 
