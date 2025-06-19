@@ -84,29 +84,20 @@ namespace backend.Controllers
             var course = await _courseRepo.GetCourseByIdAsync(id);
             return course != null ? Ok(course) : NotFound();
         }
+
         [Authorize(Roles = "Teacher")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCourse(string id, [FromBody] CourseDto updatedCourse)
         {
-            var course = await _courseRepo.GetCourseEntityByIdAsync(id); 
-            if (course == null || course.TeacherId != _userService.GetUserId()) return Forbid();
+            var userId = _userService.GetUserId();
+            var result = await _courseRepo.UpdateCourseByIdAsync(id, updatedCourse, userId);
 
-            // Cập nhật thuộc tính
-            course.CourseName = updatedCourse.CourseName;
-            course.Description = updatedCourse.Description;
-            course.Price = updatedCourse.Price;
-            course.MaxStudentQuantity = updatedCourse.MaxStudentQuantity;
-            course.StartDate = updatedCourse.StartDate;
-            course.EndDate = updatedCourse.EndDate;
-            course.UpdateDate = DateTime.UtcNow;
-            course.UpdatedUserId = _userService.GetUserId();
+            if (result == null)
+                return Forbid();
 
-            await _courseRepo.UpdateCourseAsync(course);
-
-            // Trả về DTO giống với GetCourseByIdAsync
-            var result = await _courseRepo.GetCourseByIdAsync(id); // 
             return Ok(result);
         }
+
         [Authorize(Roles = "Teacher")]
         [HttpDelete("{CourseId}")]
         public async Task<IActionResult> DeleteCourse(string CourseId)
@@ -117,5 +108,34 @@ namespace backend.Controllers
             await _courseRepo.DeleteCourseAsync(course.CourseId);
             return NoContent();
         }
+        [HttpGet("Get/{idOrName}")]
+        public async Task<IActionResult> GetCoursebyIdOrName(string idOrName)
+        {
+            var course = await _courseRepo.GetCourseByIdOrNameAsync(idOrName);
+            return course != null ? Ok(course) : NotFound();
+        }
+        // [Authorize(Roles = "Teacher")]
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> UpdateCourse(string id, [FromBody] CourseDto updatedCourse)
+        // {
+        //     var course = await _courseRepo.GetCourseEntityByIdAsync(id); 
+        //     if (course == null || course.TeacherId != _userService.GetUserId()) return Forbid();
+
+        //     // Cập nhật thuộc tính
+        //     course.CourseName = updatedCourse.CourseName;
+        //     course.Description = updatedCourse.Description;
+        //     course.Price = updatedCourse.Price;
+        //     course.MaxStudentQuantity = updatedCourse.MaxStudentQuantity;
+        //     course.StartDate = updatedCourse.StartDate;
+        //     course.EndDate = updatedCourse.EndDate;
+        //     course.UpdateDate = DateTime.UtcNow;
+        //     course.UpdatedUserId = _userService.GetUserId();
+
+        //     await _courseRepo.UpdateCourseAsync(course);
+
+        //     // Trả về DTO giống với GetCourseByIdAsync
+        //     var result = await _courseRepo.GetCourseByIdAsync(id); // 
+        //     return Ok(result);
+        // }
     }
 }
