@@ -22,35 +22,6 @@ namespace backend.Controllers
             _userService = userService;
             _context = context;
         }
-        // [Authorize(Roles = "Teacher")]
-        // [HttpPost("CreateCourse")]
-        // public async Task<IActionResult> CreateCourse([FromBody] CourseDto courseDto)
-        // {
-        //     var teacherId = _userService.GetUserId();
-        //     if (string.IsNullOrEmpty(teacherId))
-        //     return Unauthorized("User not authenticated.");
-
-        //     //  Kiểm tra xem ID có tồn tại trong bảng AspNetUsers không
-        //     var teacherExists = await _context.AspNetUsers.AnyAsync(u => u.Id == teacherId);
-        //     if (!teacherExists)
-        //         return BadRequest($"teacherId from token: {teacherId}");
-        //     var course = new Course
-        //     {
-        //         CourseId = Guid.NewGuid().ToString(),
-        //         CourseName = courseDto.CourseName,
-        //         Description = courseDto.Description,
-        //         Price = courseDto.Price,
-        //         MaxStudentQuantity = courseDto.MaxStudentQuantity,
-        //         StartDate = courseDto.StartDate,
-        //         EndDate = courseDto.EndDate,
-        //         TeacherId = teacherId,
-        //         CreateDate = DateTime.UtcNow,
-        //         CreatedUserId = _userService.GetUserId()
-        //     };
-
-        //     await _courseRepo.AddCourseAsync(course);
-        //     return Ok(course);
-        // }
         [Authorize(Roles = "Teacher")]
         [HttpPost("CreateCourse")]
         public async Task<IActionResult> CreateCourse([FromBody] CourseDto courseDto)
@@ -114,28 +85,5 @@ namespace backend.Controllers
             var course = await _courseRepo.GetCourseByIdOrNameAsync(idOrName);
             return course != null ? Ok(course) : NotFound();
         }
-        // [Authorize(Roles = "Teacher")]
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> UpdateCourse(string id, [FromBody] CourseDto updatedCourse)
-        // {
-        //     var course = await _courseRepo.GetCourseEntityByIdAsync(id); 
-        //     if (course == null || course.TeacherId != _userService.GetUserId()) return Forbid();
-
-        //     // Cập nhật thuộc tính
-        //     course.CourseName = updatedCourse.CourseName;
-        //     course.Description = updatedCourse.Description;
-        //     course.Price = updatedCourse.Price;
-        //     course.MaxStudentQuantity = updatedCourse.MaxStudentQuantity;
-        //     course.StartDate = updatedCourse.StartDate;
-        //     course.EndDate = updatedCourse.EndDate;
-        //     course.UpdateDate = DateTime.UtcNow;
-        //     course.UpdatedUserId = _userService.GetUserId();
-
-        //     await _courseRepo.UpdateCourseAsync(course);
-
-        //     // Trả về DTO giống với GetCourseByIdAsync
-        //     var result = await _courseRepo.GetCourseByIdAsync(id); // 
-        //     return Ok(result);
-        // }
     }
 }

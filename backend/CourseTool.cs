@@ -6,6 +6,7 @@ using backend.Dtos;
 using System.Security.Claims;
 using System.ComponentModel;
 using backend.Data;
+using Microsoft.EntityFrameworkCore;
 
 [McpServerToolType]
 public class CourseTool
@@ -48,85 +49,20 @@ public class CourseTool
         return string.Join("\n\n", courseInfo);
 
     }
-    // [McpServerTool, Description("Tạo khóa học mới - truyền teacherId và các thông tin khóa học riêng biệt voi với các trường thời gian có định dạng chuẩn ISO 8601 với UTC")]
-    // public async Task<Course> CreateCourseWithId(
-    //     string teacherId,
-    //     string courseName,
-    //     string description,
-    //     int MaxStudentQuantity,
-    //     decimal price,
-    //     DateTime startDate,
-    //     DateTime endDate
-    // )
-    // {
-    //     if (string.IsNullOrEmpty(teacherId))
-    //         throw new Exception("Thiếu teacherId.");
-
-    //     var dto = new CourseDto
-    //     {
-    //         CourseName = courseName,
-    //         Description = description,
-    //         Price = price,
-    //         MaxStudentQuantity = MaxStudentQuantity,
-    //         StartDate = startDate,
-    //         EndDate = endDate
-    //     };
-
-    //     return await _courseRepo.CreateCourseAsync(dto, teacherId);
-    // }
-    [McpServerTool, Description("Cập nhật khóa học - truyền teacherId và thông tin mới")]
-    public async Task<CourseDto?> UpdateCourseWithId(
-        string courseId,
-        string teacherId,
-        string courseName,
-        string description,
-        decimal price,
-        DateTime startDate,
-        DateTime endDate
-    )
-    {
-        if (!Guid.TryParse(courseId, out var id))
-            return null;
-
-        if (string.IsNullOrEmpty(teacherId))
-            throw new Exception("Thiếu teacherId.");
-
-        var updatedDto = new CourseDto
-        {
-            CourseName = courseName,
-            Description = description,
-            Price = price,
-            StartDate = startDate,
-            EndDate = endDate
-        };
-
-        return await _courseRepo.UpdateCourseByIdAsync(courseId, updatedDto, teacherId);
-    }
-
-    // [McpServerTool, Description("Tạo khóa học mới với các trường thời gian có định dạng chuẩn ISO 8601 với UTC")]
-    // public async Task<Course> CreateCourse(CourseDto dto)
-    // {
-
-    //     var teacherId = _http.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    //     if (string.IsNullOrEmpty(teacherId))
-    //         throw new Exception("Unauthenticated.");
-
-    //     return await _courseRepo.CreateCourseAsync(dto, teacherId);
-    // }
-
-    [McpServerTool, Description("Tạo khóa học mới")]
-    public async Task<Course> CreateCourse(
+    [McpServerTool, Description("Tạo khóa học mới - truyền teacherId và các thông tin khóa học riêng biệt voi với các trường thời gian có định dạng chuẩn ISO 8601 với UTC")]
+    public async Task<Course> CreateCourseWithId(
+        // string teacherId,
         string courseName,
         string description,
         int MaxStudentQuantity,
         decimal price,
         DateTime startDate,
-        DateTime endDate  // ISO 8601 string
+        DateTime endDate
     )
     {
         var teacherId = _http.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(teacherId))
-            throw new Exception("Unauthenticated.");
+            throw new Exception("Unauthenticated."); 
 
         var dto = new CourseDto
         {
@@ -140,46 +76,52 @@ public class CourseTool
 
         return await _courseRepo.CreateCourseAsync(dto, teacherId);
     }
+    [McpServerTool, Description("Cập nhật một hoặc nhiều thông tin khoá học")]
+    public async Task<CourseDto?> UpdateCourseFlexible(
+        string courseId,
+        string? courseName = null,
+        string? description = null,
+        int ? maxStudentQuantity = null,
+        decimal? price = null,
+        DateTime? startDate = null,
+        DateTime? endDate = null
+    )
+    {
+        if (!Guid.TryParse(courseId, out var id))
+            return null;
 
+        var teacherId = _http.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(teacherId))
+            throw new Exception("Unauthenticated.");
 
-    // [McpServerTool, Description("Cập nhật khóa học")]
-    // public async Task<CourseDto?> UpdateCourse(string courseId, CourseDto updatedDto)
-    // {
-    //     if (!Guid.TryParse(courseId, out var id))
-    //         return null;
+        // ✅ Lấy dữ liệu cũ để merge
+        var oldCourse = await _courseRepo.GetCourseEntityByIdAsync(courseId);
+        if (oldCourse == null || oldCourse.TeacherId != teacherId)
+            return null;
 
-    //     var TeacherId = _http.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    //     if (string.IsNullOrEmpty(TeacherId))
-    //         throw new Exception("Unauthenticated.");                
+        var updatedDto = new CourseDto
+        {
+            CourseName = courseName ?? oldCourse.CourseName,
+            Description = description ?? oldCourse.Description,
+            MaxStudentQuantity = maxStudentQuantity ?? oldCourse.MaxStudentQuantity,
+            Price = price ?? oldCourse.Price,
+            StartDate = (DateTime)(startDate ?? oldCourse.StartDate),
+            EndDate = (DateTime)(endDate ?? oldCourse.EndDate)
+        };
 
-    //     return await _courseRepo.UpdateCourseByIdAsync(id.ToString(), updatedDto, TeacherId);
-    // }
+        return await _courseRepo.UpdateCourseByIdAsync(courseId, updatedDto, teacherId);
+    }
+        [McpServerTool, Description("Xoa khóa học")]
+        public async Task<bool> DeleteCourse(string courseId)
+        {
+            if (!Guid.TryParse(courseId, out var id))
+                return false;
 
+            var course = await _courseRepo.GetCourseEntityByIdAsync(courseId);
+            if (course == null || course.TeacherId != _http.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
+                return false;
 
-    // [McpServerTool, Description("Xoa khóa học")]
-    // public async Task<bool> DeleteCourse(string courseId)
-    // {
-    //     if (!Guid.TryParse(courseId, out var id))
-    //         return false;
-
-    //     var course = await _courseRepo.GetCourseEntityByIdAsync(courseId);
-    //     if (course == null || course.TeacherId != _http.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
-    //         return false;
-
-    //     await _courseRepo.DeleteCourseAsync(courseId);
-    //     return true;
-    // }
-    // [McpServerTool, Description("xoa khoá học")]
-    // public async Task<bool> DeleteCourse(string courseId)
-    // {
-    //     if (!Guid.TryParse(courseId, out var id))
-    //         return false;
-
-    //     var course = await _courseRepo.GetCourseEntityByIdAsync(courseId);
-    //     if (course == null)
-    //         return false;
-
-    //     await _courseRepo.DeleteCourseAsync(courseId);
-    //     return true;
-    // }
-}
+            await _courseRepo.DeleteCourseAsync(courseId);
+            return true;
+        }
+    }
